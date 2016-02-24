@@ -34,8 +34,7 @@ def levenshtein_distance(s, t):
 
 while True:
     # Get input
-    s1 = raw_input('Enter string 1: ')
-    s2 = raw_input('Enter string 2: ')
+    s1, s2 = raw_input('Enter string 1: '), raw_input('Enter string 2: ')
 
     # Separator
     print('-' * 30)
