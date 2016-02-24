@@ -16,6 +16,9 @@ def levenshtein_distance(s, t):
     if len(t) == 0:
         return len(s)
 
+    # Convert to lowercase
+    s, t = s.lower(), t.lower()
+
     # Create work vectors
     v0, v1 = [i for i in range(len(t) + 1)], [0 for _ in range(len(t) + 1)]
 

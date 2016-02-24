@@ -17,7 +17,7 @@ program = int(raw_input('Enter program number: '))
 print('')
 
 # Verify a valid program was selected
-if program >= n:
+if program not in range(1, n):
     stderr.write('Invalid selection')
     exit()
 
