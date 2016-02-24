@@ -9,7 +9,7 @@ print('Programs:')
 for f in glob('*.py'):
     if f != 'runner.py':
         programs[n] = f
-        print('%d. %s' % (n, f))
+        print('%d. %s' % (n, f.replace('.py', '').replace('_', ' ').capitalize()))
         n += 1
 
 # Read which program to run
