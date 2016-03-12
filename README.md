@@ -10,3 +10,5 @@ contiguous subarray. Output the starting and ending indices and the sum of this 
 
 ## Levenshtein Distance
 Calculate the Levenshtein Distance
+
+## Master Method
