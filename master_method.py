@@ -37,6 +37,9 @@ def master_method(a, b, k, i):
     # Print the problem
     print('T(n) = %sT(n/%d) + ϴ(%s)' % ('' if a == 1 else a, b, format_output(k, i)))
 
+    # Print problem parts
+    print('a = %s, b = %s, k = %s, i = %s' % (a, b, k, i))
+
     # Calculate log base b of a
     c = log(a, b)
     print('log%s%d = %.2f' % (format_numbers(b, False), a, c))
