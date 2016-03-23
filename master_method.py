@@ -244,15 +244,24 @@ def test():
     """
     Run in test mode
     """
-    print('Type \'q\' to exit execution')
     print('Enter expression in the format: aT(n/b) + n^k log^i n')
     while True:
         s = raw_input('T(n) = ')
-        if s == 'q':
-            break
         a, b, k, i = process_input(s)
         master_method(a, b, k, i)
+        if raw_input('Run again? [y/n] ').lower() == 'n':
+            break
 
 if __name__ == '__main__':
-    main()
-    # test()
+    print('Run Modes:')
+    print('1. Normal (pre-defined test cases)')
+    print('2. Test (manual input)')
+    run_mode = raw_input('Select run mode: ')
+    if run_mode == '1':
+        print('')
+        main()
+    elif run_mode == '2':
+        print('')
+        test()
+    else:
+        raise Exception('Invalid run mode')
