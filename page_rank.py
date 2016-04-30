@@ -7,13 +7,9 @@ May 4, 2016
 import re
 import numpy as np
 import numpy.matlib as ml
-# from collections import OrderedDict
+from operator import itemgetter
 
 # Path to the directory containing test files
-import operator
-
-from objc._objc import super
-
 DATA_DIR = './page_rank_data'
 
 
@@ -149,13 +145,9 @@ class Graph:
         self.name = name
         self.node_set = NodeSet()
         self.edge_set = EdgeSet()
-        # h_matrix = OrderedDict()
         self.h_matrix = ml.matrix([0], dtype=np.float64)
-        # s_matrix = OrderedDict()
         self.s_matrix = ml.matrix([0], dtype=np.float64)
-        # g_matrix = OrderedDict()
         self.g_matrix = ml.matrix([0], dtype=np.float64)
-        # self.pi_vector = OrderedDict()
         self.pi_vector = ml.matrix([0], dtype=np.float64)
 
     def create_graph_from_file(self, file_num):
@@ -181,28 +173,10 @@ class Graph:
         """
         self.h_matrix = ml.zeros((len(self.node_set), len(self.node_set)), dtype=np.float64)
         for i, node in enumerate(self.node_set):
-            # print(node.name)
-            # print([edge.node_to.name for edge in self.edge_set if edge.node_from.name == node.name])
             out_links = [self.node_set.get_index(edge.node_to.name)
                          for edge in self.edge_set if edge.node_from.name == node.name]
             for j in out_links:
                 self.h_matrix[i, j] = 1.0/len(out_links)
-
-        # h_matrix = OrderedDict()
-        # for node in self.node_set:
-        #     h_matrix[node.name] = OrderedDict()
-        #     for node2 in self.node_set:
-        #         h_matrix[node.name][node2.name] = 0
-        #
-        # out_links = {}
-        # for node in self.node_set:
-        #     out_links[node.name] = [edge.node_to.name for edge in self.edge_set if edge.node_from.name == node.name]
-        #     print(node.name, out_links[node.name])
-        #     for item in out_links[node.name]:
-        #         items = float(len(out_links[node.name]))
-        #         h_matrix[node.name][item] = 1 / items
-        # print('H MATRIX')
-        # self.describe_matrix(h_matrix)
 
     def create_s_matrix(self):
         """
@@ -212,20 +186,6 @@ class Graph:
         self.s_matrix = self.h_matrix.copy()
         for a in self.s_matrix:
             a += 1.0/len(self.node_set) * (not a.sum())
-
-        # self.s_matrix = self.h_matrix
-        # for a, b in self.s_matrix.items():
-        #     dangling = True
-        #     for c, d in b.items():
-        #         if d != 0:
-        #             dangling = False
-        #             break
-        #     if dangling:
-        #         self.s_matrix[a] = OrderedDict()
-        #         for key, value in self.s_matrix.items():
-        #             self.s_matrix[a][key] = 1/float(len(self.s_matrix))
-        # print('\nS MATRIX')
-        # self.describe_matrix(self.s_matrix)
 
     def create_g_matrix(self, damping_factor=0.9):
         """
@@ -246,7 +206,7 @@ class Graph:
         # Round to 4 decimal places
         self.pi_vector = np.around(self.pi_vector, 4)
         rank = {self.node_set[i].name: x for i, x in enumerate(self.pi_vector[0])}
-        sorted_rank = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)
+        sorted_rank = sorted(rank.items(), key=itemgetter(1), reverse=True)
         for i, item in enumerate(sorted_rank):
             print('Rank #%d: %s' % (i+1, item[0]))
 
@@ -274,13 +234,6 @@ class Graph:
                 b = matrix[i, j]
                 data.append(('%d      ' if int(b) == b else '%.5f') % b)
             print('\t\t'.join(data))
-
-        # print('\t\t' + ('\t\t\t'.join(matrix.keys())))
-        # for k, v in matrix.items():
-        #     row = [k]
-        #     for a, b in v.items():
-        #         row.append(('%d   ' if int(b) == b else '%.2f') % b)
-        #     print('\t\t'.join(row))
 
 
 class Main:
