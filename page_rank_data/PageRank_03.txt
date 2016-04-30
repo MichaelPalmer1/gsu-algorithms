@@ -1,0 +1,27 @@
+++++ Nodes in the Graph:
+NodeName = N1
+NodeName = N2
+NodeName = N3
+NodeName = N4
+NodeName = N5
+NodeName = N6
+NodeName = N7
+NodeName = N8
+NodeName = N9
+NodeName = N10
+++++ Edges in the Graph:
+EdgeName = N7->N2
+EdgeName = N7->N10
+EdgeName = N2->N1
+EdgeName = N5->N8
+EdgeName = N3->N2
+EdgeName = N4->N2
+EdgeName = N4->N1
+EdgeName = N9->N1
+EdgeName = N9->N3
+EdgeName = N3->N4
+EdgeName = N4->N3
+EdgeName = N2->N4
+EdgeName = N2->N9
+EdgeName = N5->N1
+EdgeName = N7->N9

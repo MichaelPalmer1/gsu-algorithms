@@ -1,0 +1,18 @@
+++++ Nodes in the Graph:
+NodeName = P1
+NodeName = P2
+NodeName = P3
+NodeName = P4
+NodeName = P5
+NodeName = P6
+++++ Edges in the Graph:
+EdgeName = P3->P1
+EdgeName = P3->P5
+EdgeName = P4->P6
+EdgeName = P5->P4
+EdgeName = P6->P4
+EdgeName = P1->P2
+EdgeName = P1->P3
+EdgeName = P3->P2
+EdgeName = P4->P5
+EdgeName = P5->P6
