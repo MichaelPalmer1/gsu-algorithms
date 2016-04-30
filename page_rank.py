@@ -1,4 +1,3 @@
-from abc import ABCMeta
 import re
 import numpy as np
 import numpy.matlib as ml
@@ -6,30 +5,11 @@ import numpy.matlib as ml
 
 DATA_DIR = './page_rank_data'
 
-# class Set:
-#     def add(self, item):
-#         if item in self.data:
-#             raise Exception('Item "%s" already exists' % item)
-#         self.data.append(item)
-#
-#     def remove(self, item):
-#         if item in self.data:
-#             raise Exception('Item "%s" does not exist' % item)
-#         self.data.remove(item)
-#
-#     def get(self, item):
-#         """
-#         Return the specified object
-#         :param index:
-#         :return: object
-#         """
-#         return self.data[item]
-#
-#     def describe(self):
-#         return self.data
-
 
 class Node:
+    """
+    Node
+    """
     def __init__(self, name):
         """
         Create a new Node
@@ -43,6 +23,9 @@ class Node:
 
 
 class Edge:
+    """
+    Edge
+    """
     def __init__(self, node_from, node_to, directed=True):
         """
         Create a new Edge
@@ -62,16 +45,26 @@ class Edge:
 
 
 class Set(list):
-    model = ABCMeta
+    """
+    Set
+    """
+    model = str
 
     def add(self, *args, **kwargs):
         """
-        Add a new item to the set
-        :param args:
-        :param kwargs:
-        :return:
+        Add an item to the set
         """
-        self.append(self.model(*args, **kwargs))
+        item = self.model(*args, **kwargs)
+        if item in self:
+            raise Exception('Item "%s" already exists' % item)
+        self.append(item)
+
+    def remove(self, item):
+        """
+        Remove an item from the set
+        :param item: Item to remove
+        """
+        super(Set, self).remove(self.get(item))
 
     def find(self, item):
         """
@@ -81,39 +74,45 @@ class Set(list):
         :return: true or false
         :rtype: bool
         """
-        return self.get(item) is not None
+        return item in self
 
-    def get(self, item):
+    def get(self, name):
         """
-        Return the specified object
-        :param item:
-        :return:
+        Return the object identified by the specified name
+        :param name: Item identifier
+        :type name: str
+        :return: Item
+        :rtype: self.model
         """
-        for x in self:
-            if x.name == item:
-                return x
-        return None
+        if not self.find(name):
+            raise ValueError('Item "%s" does not exist' % name)
+        for element in self:
+            if str(element) == name:
+                return element
 
     def get_index(self, item):
         """
         Get the index of the specified item
         :param item:
-        :return: index
+        :return: index of the item
         :rtype: int
         """
-        for n, x in enumerate(self):
-            if x.name == item:
-                return n
-        return None
+        if not self.find(item):
+            raise ValueError('Item "%s" does not exist' % item)
+        for i, element in enumerate(self):
+            if str(element) == str(item):
+                return i
 
     def describe(self):
         """
-        Return a list representation of the items in the set
-        :return: list of items
-        :rtype: list
+        Return a string representation of the items in the set
+        :return: item in set
+        :rtype: str
         """
-        # return [item for item in self]
         return str(self)
+
+    def __contains__(self, item):
+        return str(item) in [str(element) for element in self]
 
     def __str__(self):
         return ', '.join([str(item) for item in self])
@@ -121,22 +120,10 @@ class Set(list):
 
 class NodeSet(Set):
     model = Node
-    # def add(self, item):
-    #     node = Node(item)
-    #     self.append(node)
 
 
 class EdgeSet(Set):
     model = Edge
-    # def add(self, item, node_from, node_to, directed=True):
-    #     edge = Edge(item, node_from, node_to, directed)
-    #     self.append(edge)
-    #
-    # def describe(self):
-    #     items = []
-    #     for item in self:
-    #         items.append('%s -> %s' % (item.node_from.name, item.node_to.name))
-    #     return items
 
 
 class Graph:
@@ -304,6 +291,7 @@ class Main:
 
 
 if __name__ == '__main__':
-    m = Main()
-    m.create_graph_from_file(0)  # int(input('Enter file number [1 - 5]: ')))
+    pass
+    # m = Main()
+    # m.create_graph_from_file(0)  # int(input('Enter file number [1 - 5]: ')))
     # m.print_graph()
