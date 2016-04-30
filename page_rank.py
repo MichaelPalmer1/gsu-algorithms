@@ -1,7 +1,18 @@
+"""
+Final Project - Page Rank Algorithm
+Michael Palmer
+CSCI 5330 A
+May 4, 2016
+"""
 import re
 import numpy as np
 import numpy.matlib as ml
 # from collections import OrderedDict
+
+# Path to the directory containing test files
+import operator
+
+from objc._objc import super
 
 DATA_DIR = './page_rank_data'
 
@@ -221,11 +232,23 @@ class Graph:
         Create the Google matrix from the S matrix
         G = alpha * H + (alpha * a + (1 - alpha) e) 1/n * e^T
         :param damping_factor: Damping factor (default is 0.9)
+        :type damping_factor: float
         """
-        self.g_matrix = damping_factor * self.s_matrix + (1.0 - damping_factor) * 1.0 / len(self.node_set)
+        self.g_matrix = damping_factor * self.s_matrix + (1.0 - damping_factor) * (1.0 / len(self.node_set))
 
     def compute_page_rank(self):
-        pass
+        """
+        Compute the page rank
+        """
+        self.pi_vector = ml.matrix([1.0/len(self.node_set)] * len(self.node_set), np.float64)
+        for _ in range(self.g_matrix.size):
+            self.pi_vector *= self.g_matrix
+        # Round to 4 decimal places
+        self.pi_vector = np.around(self.pi_vector, 4)
+        rank = {self.node_set[i].name: x for i, x in enumerate(self.pi_vector[0])}
+        sorted_rank = sorted(rank.items(), key=operator.itemgetter(1), reverse=True)
+        for i, item in enumerate(sorted_rank):
+            print('Rank #%d: %s' % (i+1, item[0]))
 
     def describe_graph(self):
         """
@@ -261,37 +284,56 @@ class Graph:
 
 
 class Main:
-    def __init__(self):
-        self.__graph = Graph()
+    """
+    Main class
+    """
+    __graph = Graph()
 
-    def create_graph_from_file(self, file_num):
-        self.__graph.create_graph_from_file(file_num)
-        print(self.__graph.node_set.describe())
-        print(self.__graph.edge_set.describe())
-        self.__graph.create_h_matrix()
-        self.__graph.create_s_matrix()
-        self.__graph.create_g_matrix(damping_factor=0.9)
-        self.__graph.describe_matrix(self.__graph.h_matrix)
-        print('----------')
-        self.__graph.describe_matrix(self.__graph.s_matrix)
-        print('----------')
-        self.__graph.describe_matrix(self.__graph.g_matrix)
+    @staticmethod
+    def create_graph_from_file(file_num):
+        Main.__graph.create_graph_from_file(file_num)
+        print('### Graph Description ###')
+        print('-' * 75)
+        print(Main.__graph.node_set.describe())
+        print(Main.__graph.edge_set.describe())
 
-    def print_graph(self):
+        # Create the matrices
+        Main.__graph.create_h_matrix()
+        Main.__graph.create_s_matrix()
+        Main.__graph.create_g_matrix(damping_factor=0.9)
+
+        print('\n### Transition Matrix (H) ###')
+        print('-' * 75)
+        Main.__graph.describe_matrix(Main.__graph.h_matrix)
+
+        print('\n### Stochastic Matrix (S) ###')
+        print('-' * 75)
+        Main.__graph.describe_matrix(Main.__graph.s_matrix)
+
+        print('\n### Google Matrix (G) ###')
+        print('-' * 75)
+        Main.__graph.describe_matrix(Main.__graph.g_matrix)
+
+        print('\n### Page Rankings ###')
+        print('-' * 75)
+        Main.__graph.compute_page_rank()
+
+    @staticmethod
+    def print_graph():
+        """
+        Generate a visual graph using NetworkX and PyLab
+        """
         import networkx as nx
         import pylab
 
         graph = nx.DiGraph()
-        for edge in self.__graph.edge_set:
-            graph.add_edge(edge.node_from.name, edge.node_to.name, weight=0)
+        for edge in Main.__graph.edge_set:
+            graph.add_edge(edge.node_from.name, edge.node_to.name)
 
         pos = nx.shell_layout(graph)
         nx.draw(graph, pos, node_size=1500, node_color='yellow', edge_color='red', with_labels=True)
         pylab.show()
 
-
 if __name__ == '__main__':
-    pass
-    # m = Main()
-    # m.create_graph_from_file(0)  # int(input('Enter file number [1 - 5]: ')))
-    # m.print_graph()
+    Main.create_graph_from_file(0)  # int(input('Enter file number [1 - 5]: ')))
+    Main.print_graph()
