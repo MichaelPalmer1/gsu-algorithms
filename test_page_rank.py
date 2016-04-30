@@ -8,6 +8,8 @@ TEST_FILE_NUMBER = 0
 
 
 class TestPageRank(numpy.testing.TestCase):
+    graph = page_rank.Graph()
+
     def setUp(self):
         self.graph = page_rank.Graph()
         self.graph.create_graph_from_file(TEST_FILE_NUMBER)
@@ -23,7 +25,7 @@ class TestPageRank(numpy.testing.TestCase):
             [0.0, 0.0, 0.0, 0.0, 1.0 / 2.0, 1.0 / 2.0],
             [0.0, 0.0, 0.0, 1.0 / 2.0, 0.0, 1.0 / 2.0],
             [0.0, 0.0, 0.0, 1.0 / 1.0, 0.0, 0.0]
-        ])
+        ], numpy.float64)
         self.graph.create_h_matrix()
         numpy.testing.assert_allclose(self.graph.h_matrix, matrix, rtol=1e-15, atol=1e-15)
 
@@ -38,7 +40,7 @@ class TestPageRank(numpy.testing.TestCase):
             [0.0, 0.0, 0.0, 0.0, 1.0 / 2.0, 1.0 / 2.0],
             [0.0, 0.0, 0.0, 1.0 / 2.0, 0.0, 1.0 / 2.0],
             [0.0, 0.0, 0.0, 1.0 / 1.0, 0.0, 0.0]
-        ])
+        ], numpy.float64)
         self.graph.create_h_matrix()
         self.graph.create_s_matrix()
         numpy.testing.assert_allclose(self.graph.s_matrix, matrix, rtol=1e-15, atol=1e-15)
@@ -54,8 +56,8 @@ class TestPageRank(numpy.testing.TestCase):
             [1.0 / 60.0, 1.0 / 60.0, 1.0 / 60.0, 1.0 / 60.0, 7.0 / 15.0, 7.0 / 15.0],
             [1.0 / 60.0, 1.0 / 60.0, 1.0 / 60.0, 7.0 / 15.0, 1.0 / 60.0, 7.0 / 15.0],
             [1.0 / 60.0, 1.0 / 60.0, 1.0 / 60.0, 11.0 / 12.0, 1.0 / 60.0, 1.0 / 60.0]
-        ])
+        ], numpy.float64)
         self.graph.create_h_matrix()
         self.graph.create_s_matrix()
         self.graph.create_g_matrix(damping_factor=0.9)
-        numpy.testing.assert_allclose(self.graph.g_matrix, matrix, rtol=1e-15)
+        numpy.testing.assert_allclose(self.graph.g_matrix, matrix, rtol=1e-15, atol=1e-15)
