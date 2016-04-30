@@ -112,11 +112,9 @@ class Set(list):
 
     def describe(self):
         """
-        Return a string representation of the items in the set
-        :return: item in set
-        :rtype: str
+        Print a string representation of the items in the set
         """
-        return str(self)
+        print(self)
 
     def __contains__(self, item):
         return str(item) in [str(element) for element in self]
@@ -218,8 +216,8 @@ class Graph:
             in_links = [edge.node_from.name for edge in self.edge_set if edge.node_to.name == node.name]
             out_links = [edge.node_to.name for edge in self.edge_set if edge.node_from.name == node.name]
             print('Node %s' % node.name)
-            print('Links in:  %s' % in_links)
-            print('Links out: %s\n' % out_links)
+            print('Links in:  %s' % (', '.join(in_links) if len(in_links) else 'None'))
+            print('Links out: %s\n' % (', '.join(out_links) if len(out_links) else 'None'))
 
     def describe_matrix(self, matrix):
         """
@@ -244,11 +242,20 @@ class Main:
 
     @staticmethod
     def create_graph_from_file(file_num):
+        """
+        Create a graph using the specified file number
+        :param file_num: File number
+        :type file_num: int
+        """
         Main.__graph.create_graph_from_file(file_num)
-        print('### Graph Description ###')
+        print('### Input ###')
         print('-' * 75)
-        print(Main.__graph.node_set.describe())
-        print(Main.__graph.edge_set.describe())
+        Main.__graph.node_set.describe()
+        Main.__graph.edge_set.describe()
+
+        print('\n### Graph Description ###')
+        print('-' * 75)
+        Main.__graph.describe_graph()
 
         # Create the matrices
         Main.__graph.create_h_matrix()
@@ -289,4 +296,4 @@ class Main:
 
 if __name__ == '__main__':
     Main.create_graph_from_file(0)  # int(input('Enter file number [1 - 5]: ')))
-    Main.print_graph()
+    # Main.print_graph()
