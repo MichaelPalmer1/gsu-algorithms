@@ -1,3 +1,4 @@
+#!/usr/bin/env python2.7
 """
 Final Project - Page Rank Algorithm
 Michael Palmer
@@ -194,15 +195,20 @@ class Graph:
         """
         self.g_matrix = damping_factor * self.s_matrix + (1.0 - damping_factor) * (1.0 / len(self.node_set))
 
-    def compute_page_rank(self):
+    def create_pi_vector(self):
         """
-        Compute the page rank
+        Create the Pi Vector
         """
-        self.pi_vector = ml.matrix([1.0/len(self.node_set)] * len(self.node_set), np.float64)
+        self.pi_vector = ml.matrix([1.0 / len(self.node_set)] * len(self.node_set), np.float64)
         for _ in range(self.g_matrix.size):
             self.pi_vector *= self.g_matrix
         # Round to 4 decimal places
         self.pi_vector = np.around(self.pi_vector, 4)
+
+    def compute_page_rank(self):
+        """
+        Compute the page rank
+        """
         rank = {self.node_set[i].name: x for i, x in enumerate(self.pi_vector[0])}
         sorted_rank = sorted(rank.items(), key=itemgetter(1), reverse=True)
         for i, item in enumerate(sorted_rank):
@@ -250,7 +256,9 @@ class Main:
         Main.__graph.create_graph_from_file(file_num)
         print('### Input ###')
         print('-' * 75)
+        print('Nodes:')
         Main.__graph.node_set.describe()
+        print('Edges:')
         Main.__graph.edge_set.describe()
 
         print('\n### Graph Description ###')
@@ -261,6 +269,7 @@ class Main:
         Main.__graph.create_h_matrix()
         Main.__graph.create_s_matrix()
         Main.__graph.create_g_matrix(damping_factor=0.9)
+        Main.__graph.create_pi_vector()
 
         print('\n### Transition Matrix (H) ###')
         print('-' * 75)
@@ -273,6 +282,10 @@ class Main:
         print('\n### Google Matrix (G) ###')
         print('-' * 75)
         Main.__graph.describe_matrix(Main.__graph.g_matrix)
+
+        print('\n### Pi Vector ###')
+        print('-' * 75)
+        Main.__graph.describe_matrix(Main.__graph.pi_vector)
 
         print('\n### Page Rankings ###')
         print('-' * 75)
@@ -295,5 +308,5 @@ class Main:
         pylab.show()
 
 if __name__ == '__main__':
-    Main.create_graph_from_file(0)  # int(input('Enter file number [1 - 5]: ')))
+    Main.create_graph_from_file(5)  # int(input('Enter file number [0 - 5]: ')))
     # Main.print_graph()
