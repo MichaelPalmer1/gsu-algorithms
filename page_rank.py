@@ -257,14 +257,14 @@ class Main:
         """
         Main.__graph.create_graph_from_file(file_num)
         print('### Input ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         print('Nodes:')
         Main.__graph.node_set.describe()
         print('Edges:')
         Main.__graph.edge_set.describe()
 
         print('\n### Graph Description ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         Main.__graph.describe_graph()
 
         # Create the matrices
@@ -274,23 +274,23 @@ class Main:
         Main.__graph.create_pi_vector()
 
         print('\n### Transition Matrix (H) ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.h_matrix)
 
         print('\n### Stochastic Matrix (S) ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.s_matrix)
 
         print('\n### Google Matrix (G) ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.g_matrix)
 
         print('\n### Pi Vector ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.pi_vector, False)
 
         print('\n### Page Rankings ###')
-        print('-' * 75)
+        print('-------------' * len(Main.__graph.node_set))
         Main.__graph.compute_page_rank()
 
     @staticmethod
