@@ -225,15 +225,17 @@ class Graph:
             print('Links in:  %s' % (', '.join(in_links) if len(in_links) else 'None'))
             print('Links out: %s\n' % (', '.join(out_links) if len(out_links) else 'None'))
 
-    def describe_matrix(self, matrix):
+    def describe_matrix(self, matrix, row_labels=True):
         """
         Print a matrix
         :param matrix: Matrix to output
         :type matrix: numpy.matlib.matrix
+        :param row_labels: Print row labels? (default is true)
+        :type row_labels: bool
         """
         print('\t\t' + ('\t\t\t'.join([node.name for node in self.node_set])))
         for i, row in enumerate(matrix):
-            data = [self.node_set[i].name]
+            data = [self.node_set[i].name] if row_labels else ['']
             for j in range(row.size):
                 b = matrix[i, j]
                 data.append(('%d      ' if int(b) == b else '%.5f') % b)
@@ -285,7 +287,7 @@ class Main:
 
         print('\n### Pi Vector ###')
         print('-' * 75)
-        Main.__graph.describe_matrix(Main.__graph.pi_vector)
+        Main.__graph.describe_matrix(Main.__graph.pi_vector, False)
 
         print('\n### Page Rankings ###')
         print('-' * 75)
