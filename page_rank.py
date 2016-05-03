@@ -8,9 +8,10 @@ May 4, 2016
 Program Summary:
 ----------------
 The purpose of this program is to create an implementation of Google's page rank algorithm.
-The algorithm calculates each node's probability by counting the number of out-links it has
-and dividing that number by the total number of nodes. These values are stored in an
-adjacency matrix.
+Important web pages typically have a large number of other web pages that link to it. The
+algorithm follows that logic and calculates the importance of a web page based on the number
+of pages that link to it. This value is then divided by the total number of pages to get a
+probability of moving from one page to another.
 
 Important Notes:
 ----------------
@@ -20,6 +21,8 @@ are located in another directory, modify DATA_DIR with the appropriate path.
 The NetworkX and PyLab libraries are required to display the optional visualization of the
 graph. It can be disabled (i.e. if the library does not work on your machine) by setting
 GRAPH_VISUALIZATION to False.
+
+Test file 0 is the example illustrated in the slides.
 
 Python version: 2.7
 """
@@ -268,11 +271,11 @@ class Graph:
         for a in self.s_matrix:
             a += 1.0/len(self.node_set) * (not a.sum())
 
-    def create_g_matrix(self, damping_factor=0.9):
+    def create_g_matrix(self, damping_factor=0.85):
         """
         Create Google matrix from the S matrix
         Formula: G = damping_factor * S + (1 - damping_factor) * 1/N
-        :param damping_factor: Damping factor (default is 0.9)
+        :param damping_factor: Damping factor (default is 0.85)
         :type damping_factor: float
         """
         self.g_matrix = damping_factor * self.s_matrix + (1.0 - damping_factor) * 1.0 / len(self.node_set)
@@ -372,7 +375,7 @@ class Main:
         # Generate the matrices
         Main.__graph.create_h_matrix()
         Main.__graph.create_s_matrix()
-        Main.__graph.create_g_matrix()
+        Main.__graph.create_g_matrix(damping_factor=0.9)
         Main.__graph.create_pi_vector()
 
     @staticmethod
