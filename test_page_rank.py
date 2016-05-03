@@ -2,7 +2,7 @@ import page_rank
 import numpy
 
 """
-Created a test file from the example on the slides and named it PageRank_00.txt
+Created a test file from the example on the slides and named it PageRank_00.txt.
 """
 TEST_FILE_NUMBER = 0
 
@@ -62,7 +62,7 @@ class TestPageRank(numpy.testing.TestCase):
         ], numpy.float64)
         self.graph.create_h_matrix()
         self.graph.create_s_matrix()
-        self.graph.create_g_matrix(damping_factor=0.9)
+        self.graph.create_g_matrix()
         self.graph.describe_matrix(self.graph.g_matrix)
         numpy.testing.assert_allclose(self.graph.g_matrix, expected)
 
@@ -71,10 +71,23 @@ class TestPageRank(numpy.testing.TestCase):
         Test the Pi vector
         """
         expected = numpy.matrix([0.03721, 0.05396, 0.04151, 0.3751, 0.206, 0.2862], numpy.float64)
-        expected = numpy.around(expected, 4)
+        expected.round(4, expected)
         self.graph.create_h_matrix()
         self.graph.create_s_matrix()
-        self.graph.create_g_matrix(damping_factor=0.9)
-        self.graph.compute_page_rank()
+        self.graph.create_g_matrix()
+        self.graph.create_pi_vector()
+        self.graph.pi_vector.round(4, self.graph.pi_vector)
         self.graph.describe_matrix(self.graph.pi_vector)
         numpy.testing.assert_allclose(self.graph.pi_vector, expected)
+
+    def test_ranks(self):
+        """
+        Test the final rankings
+        """
+        expected = ['P4', 'P6', 'P5', 'P2', 'P3', 'P1']
+        self.graph.create_h_matrix()
+        self.graph.create_s_matrix()
+        self.graph.create_g_matrix()
+        self.graph.create_pi_vector()
+        self.graph.compute_page_rank()
+        self.assertListEqual(self.graph.rankings, expected)
