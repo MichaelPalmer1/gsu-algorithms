@@ -1,19 +1,33 @@
 #!/usr/bin/env python2.7
 """
-Final Project - Page Rank Algorithm
+Algorithm Final Project - Google's page rank algorithm
 Michael Palmer
 CSCI 5330 A
 May 4, 2016
 
-This program was developed and tested using Python 2.7. Note that the NetworkX and PyLab
-libraries are required to display the optional visual representation of the graph.
+Program Summary:
+----------------
+The purpose of this program is to create an implementation of Google's page rank algorithm.
+The algorithm calculates each node's probability by counting the number of out-links it has
+and dividing that number by the total number of nodes. These values are stored in an
+adjacency matrix.
 
-For best results (format of console output), run this code in PyCharm.
+Important Notes:
+----------------
+In writing this program, the test files were placed in ./page_rank_data. If your test files
+are located in another directory, modify DATA_DIR with the appropriate path.
+
+The NetworkX and PyLab libraries are required to display the optional visualization of the
+graph. It can be disabled (i.e. if the library does not work on your machine) by setting
+GRAPH_VISUALIZATION to False.
+
+Python version: 2.7
 """
 import re
 import numpy as np
 import numpy.matlib as ml
 from operator import itemgetter
+from os import environ
 
 # Path to the directory containing test files
 DATA_DIR = './page_rank_data'
@@ -23,6 +37,9 @@ GRAPH_VISUALIZATION = True
 
 # Assigned test file number
 ASSIGNED_FILE_NO = 5
+
+# Running in PyCharm? (When run in terminal, tabs show differently)
+PYCHARM = environ.get('PYCHARM_HOSTED', 0) == '1'
 
 
 class Node:
@@ -310,8 +327,11 @@ class Graph:
         :type matrix: numpy.matlib.matrix
         :type row_labels: bool
         """
+        # Set number of tabs based on if running in PyCharm or not
+        tabs = '\t\t\t' if PYCHARM else '\t\t'
+
         # Column headers
-        print('\t\t' + ('\t\t\t'.join([node.name for node in self.node_set])))
+        print('\t\t' + (tabs.join([node.name for node in self.node_set])))
 
         # Loop through the matrix rows
         for i, row in enumerate(matrix):
@@ -343,7 +363,6 @@ class Main:
         """
         # Test file number input
         print('Press enter to use the assigned test file (%.2d) or enter a custom file number.' % ASSIGNED_FILE_NO)
-        print('Test files are searched for in "%s". To use another location, modify the DATA_DIR variable.' % DATA_DIR)
         input_file = raw_input('Enter test file number [0 - 5]: [%.2d] ' % ASSIGNED_FILE_NO)
         Main.__file_num = ASSIGNED_FILE_NO if input_file == '' else int(input_file)
 
@@ -357,10 +376,12 @@ class Main:
         Main.__graph.create_pi_vector()
 
     @staticmethod
-    def print_graph(show_diagram=False):
+    def print_graph():
         """
-        Generate output and optionally show a visual graph (requires NetworkX and PyLab)
+        Generate output
         """
+        divider_length = 13 if PYCHARM else 18
+
         # Header
         print('\nCSCI 5330 Spring 2016')
         print('Michael Palmer')
@@ -368,9 +389,8 @@ class Main:
 
         # Details about the input file
         print('\nInput')
-        print('-------------' * len(Main.__graph.node_set))
-        print('Graph Number:')
-        print('%.2d' % Main.__file_num)
+        print('-' * divider_length * len(Main.__graph.node_set))
+        print('Graph Number: %.2d' % Main.__file_num)
         print('\nNodes:')
         Main.__graph.node_set.describe()
         print('\nEdges:')
@@ -378,34 +398,31 @@ class Main:
 
         # Adjacency matrix
         print('\nAdjacency Matrix (H)')
-        print('-------------' * len(Main.__graph.node_set))
+        print('-' * divider_length * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.h_matrix)
 
         # Stochastic matrix
         print('\nStochastic Matrix (S)')
-        print('-------------' * len(Main.__graph.node_set))
+        print('-' * divider_length * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.s_matrix)
 
         # Google matrix
         print('\nGoogle Matrix (G)')
-        print('-------------' * len(Main.__graph.node_set))
+        print('-' * divider_length * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.g_matrix)
 
         # Pi vector
         print('\nPi Vector')
-        print('-------------' * len(Main.__graph.node_set))
+        print('-' * divider_length * len(Main.__graph.node_set))
         Main.__graph.describe_matrix(Main.__graph.pi_vector, False)
 
         # Page rankings
         print('\nPage Rankings')
-        print('-------------' * len(Main.__graph.node_set))
+        print('-' * divider_length * len(Main.__graph.node_set))
         Main.__graph.compute_page_rank()
 
-        """
-        If enabled, the following section will create and display a visual
-        representation of the graph. It requires the NetworkX and PyLab libraries.
-        """
-        if show_diagram:
+        # If enabled, display the visualization
+        if GRAPH_VISUALIZATION:
             import networkx as nx
             import pylab
 
@@ -424,4 +441,4 @@ class Main:
 if __name__ == '__main__':
     # Run the test cases and print the results
     Main.create_graph_from_file()
-    Main.print_graph(GRAPH_VISUALIZATION)
+    Main.print_graph()
