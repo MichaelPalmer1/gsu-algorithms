@@ -22,3 +22,9 @@ The purpose of the master theorem is to calculate the complexity of a divide and
 into `a` sub-problems, with each sub-problem being of size `n/b`. `n` represents the size of the entire problem and 
 `f(n)` represents the cost outside of the recursive call, such as the cost of merging the sub-problems back together. 
 The end goal is to determine an asymptotically tight bound for the problem.
+
+## Page Rank
+Implementation of Google's page rank algorithm. Important web pages typically have a large number of other web pages 
+that link to it. The algorithm follows that logic and calculates the importance of a web page based on the number of 
+pages that link to it. This value is then divided by the total number of pages to get a probability of moving from 
+one page to another.
