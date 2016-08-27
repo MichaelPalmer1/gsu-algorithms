@@ -1,7 +1,7 @@
 # coding=utf-8
 # Specifying the encoding so that we can use some symbols (i.e. theta, superscripts, etc.)
 """
-Michael Palmer (900757121)
+Michael Palmer
 CSCI 5330 A
 March 23, 2016
 
@@ -222,7 +222,6 @@ def main():
     # Print header
     print('CSCI 5330 Spring 2016')
     print('Michael Palmer')
-    print('900757121\n')
 
     # Loop through the test cases
     for case_num, case in enumerate(cases):
