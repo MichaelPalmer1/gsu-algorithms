@@ -24,7 +24,10 @@ GRAPH_VISUALIZATION to False.
 
 Test file 0 is the example illustrated in the slides.
 
-Python version: 2.7
+Requirements:
+-------------
+Python 2.7
+NumPy
 """
 import re
 import numpy as np
@@ -388,7 +391,6 @@ class Main:
         # Header
         print('\nCSCI 5330 Spring 2016')
         print('Michael Palmer')
-        print('900757121')
 
         # Details about the input file
         print('\nInput')
