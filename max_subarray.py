@@ -1,5 +1,5 @@
 """
-Michael Palmer (900757121)
+Michael Palmer
 CSCI 5330 A
 February 29, 2016
 
@@ -81,7 +81,6 @@ def main():
         # Print header
         print('\nCSCI 5330 Spring 2016')
         print('Michael Palmer')
-        print('900757121\n')
         print('Running data for file %s' % filename)
 
         # Find the maximum subarray
